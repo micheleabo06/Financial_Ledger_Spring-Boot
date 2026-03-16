@@ -11,29 +11,29 @@ import java.math.BigDecimal;
 public class LedgerService {
 
         private final AccountRepository accountRepository;
-        // This lets the Service use the Repository
+        // this lets the Service use the Repository
         public LedgerService(AccountRepository accountRepository) {
             this.accountRepository = accountRepository;
         }
 
-        @Transactional // The most important part for a bank!
+        @Transactional 
         public void transferMoney(Long fromId, Long toId, BigDecimal amount) {
-            // 1. Fetch the accounts
+            //fetch the accounts
             Account fromAccount = accountRepository.findById(fromId)
                     .orElseThrow(() -> new RuntimeException("Sender not found"));
             Account toAccount = accountRepository.findById(toId)
-                    .orElseThrow(() -> new RuntimeException("Receiver not found"));
+                    .orElseThrow(() -> new RuntimeEx'ception("Receiver not found"));
 
-            // 2. Security Check: Use Algebra to ensure balance isn't negative
+            //security check (to make sure balance isnt negative)
             if (fromAccount.getBalance().compareTo(amount) < 0) {
                 throw new RuntimeException("Insufficient funds!");
             }
 
-            // 3. Mathematical Update: Move the money
+            //move the money
             fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
             toAccount.setBalance(toAccount.getBalance().add(amount));
 
-            // 4. Save the changes back to the database
+            //save the changes back to the database
             accountRepository.save(fromAccount);
             accountRepository.save(toAccount);
         }
