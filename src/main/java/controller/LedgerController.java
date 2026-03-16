@@ -13,7 +13,7 @@ public class LedgerController {
         this.ledgerService = ledgerService;
     }
 
-    // This method lets you move money via a URL
+    // this allows money movement via the URL
     @PostMapping("/transfer")
     public String transfer(@RequestParam Long from,
                            @RequestParam Long to,
@@ -26,7 +26,7 @@ public class LedgerController {
         }
     }
 
-    @GetMapping("/") // This handles 'localhost:8080' address
+    @GetMapping("/") //for 'localhost:8080' address
     public String welcome() {
         return "Welcome to my Ledger API! The server is now live";
     }
